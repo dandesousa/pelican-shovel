@@ -11,7 +11,9 @@ import pelicanconf
 
 CURRENT_DIRECTORY=os.getcwd()
 CONTENT_DIRECTORY=os.path.join(CURRENT_DIRECTORY, "content")
+TEMPLATES_DIRECTORY=os.path.join(CURRENT_DIRECTORY, "shovel", "templates")
 
 NOW=dt.datetime.now()
-POST_DIRECTORY=os.path.join(CONTENT_DIRECTORY, "posts", NOW.strftime("%Y/%m"))
 
+import subprocess
+EDITOR=subprocess.check_output(["git", "config", "--get", "core.editor"]).strip()
