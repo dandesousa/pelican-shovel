@@ -3,37 +3,35 @@
 from common import *
 from jinja2 import Environment, FileSystemLoader
 
-POST_DIRECTORY=os.path.join(CONTENT_DIRECTORY, "posts", NOW.strftime("%Y/%m"))
+PAGE_DIRECTORY=os.path.join(CONTENT_DIRECTORY, "pages")
 
 @task
-def new(markup=DEFAULT_MARKUP,**kwargs):
-  """Handles creation of a new post."""
+def new(markup="md",**kwargs):
+  """Handles creation of a new page."""
   
   env = Environment(loader=FileSystemLoader(TEMPLATES_DIRECTORY))
   if markup in MARKUP_MARKDOWN_LIST:
-    template = env.get_template("post-markdown.j2")
+    template = env.get_template("page-markdown.j2")
     extension = MARKDOWN_EXTENSION
   else:
     sys.stderr.write("Unable to find template for markup type: '%s'\n" % (markup))
     sys.exit(1)
     
   try:
-    if not os.path.exists(POST_DIRECTORY):
-      os.makedirs(POST_DIRECTORY)
+    if not os.path.exists(PAGE_DIRECTORY):
+      os.makedirs(PAGE_DIRECTORY)
   except OSError as exc:
-    sys.stderr.write("Unable to write directory '%s', error: '%s'\n" % (POST_DIRECTORY, str(exc)))
+    sys.stderr.write("Unable to write directory '%s', error: '%s'\n" % (PAGE_DIRECTORY, str(exc)))
     sys.exit(2)
 
   tdict = dict()
-  title=kwargs.get("title", "My Post")
-  (slug, path) = new_slug_and_path_from_title(title, extension, POST_DIRECTORY)
+  title=kwargs.get("title", "My Page")
+  (slug, path) = new_slug_and_path_from_title(title, extension, PAGE_DIRECTORY)
+  if kwargs.get("hidden", False):
+    tdict["status"]="hidden"
   tdict["title"]=title
   tdict["date"]=NOW.strftime("%Y-%m-%d %H:%M")
-  tdict["tags"]=kwargs.get("tags","")
-  tdict["category"]=kwargs.get("category","")
-  tdict["slug"]=slug
   tdict["author"]=pelicanconf.AUTHOR
-  tdict["summary"]=""
 
   with open(path, "w") as f:
     f.write(template.render(**tdict))
@@ -43,21 +41,21 @@ def new(markup=DEFAULT_MARKUP,**kwargs):
   else:
     sys.stderr.write("Unable to open editor with command: `%s %s`\n" % ( EDITOR, path ))
   
-  print "Post created at: %s" % (path)
+  print "Page created at: %s" % (path)
 
 @task
 def list(**kwargs):
-  """Lists posts according to user options"""
+  """Lists page according to user options"""
 
   files = []
   if not len(kwargs):
-    # list all posts
-    files = find_files(POST_DIRECTORY)
+    # list all pages
+    files = find_files(PAGE_DIRECTORY)
   elif 'search' in kwargs:
     # case insensitive search
     import re
     pattern = kwargs['search']
-    files = find_files(POST_DIRECTORY, lambda x: re.search(pattern, x, re.IGNORECASE))
+    files = find_files(PAGE_DIRECTORY, lambda x: re.search(pattern, x, re.IGNORECASE))
   else:
     sys.stderr.write("Received unexpected argument combination, expecting 0 arguments or --search <pattern>\n")
     sys.exit(1)
