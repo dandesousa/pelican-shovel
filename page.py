@@ -48,6 +48,7 @@ def list(**kwargs):
   """Lists page according to user options"""
 
   files = []
+  should_edit = 'edit' in kwargs
   if not len(kwargs):
     # list all pages
     files = find_files(PAGE_DIRECTORY)
@@ -62,4 +63,11 @@ def list(**kwargs):
 
   for f in files:
     print f
+    
+    if should_edit:
+      if EDITOR:
+        subprocess.call([EDITOR, f])
+      else:
+        sys.stderr.write("Unable to open editor with command: `%s %s`\n" % ( EDITOR, path ))
+        sys.exit(1)
 

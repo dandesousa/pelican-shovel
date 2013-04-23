@@ -50,6 +50,7 @@ def list(**kwargs):
   """Lists posts according to user options"""
 
   files = []
+  should_edit = 'edit' in kwargs
   if not len(kwargs):
     # list all posts
     files = find_files(POST_DIRECTORY)
@@ -64,4 +65,10 @@ def list(**kwargs):
 
   for f in files:
     print f
+
+    if EDITOR and should_edit:
+      subprocess.call([EDITOR, f])
+    elif should_edit:
+      sys.stderr.write("Unable to open editor with command: `%s %s`\n" % ( EDITOR, path ))
+      sys.exit(1)
 

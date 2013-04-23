@@ -46,7 +46,7 @@ def find_files(target_directory, filter_func=None):
   """Returns a list of all files under the given target directory."""
   ret = []
   for root, dirs, files in os.walk(target_directory):
-    ret += filter(filter_func,files)
+    ret += [os.path.join(root, f) for f in filter(filter_func,files)]
   return ret
 
 
