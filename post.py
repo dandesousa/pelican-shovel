@@ -3,7 +3,8 @@
 from common import *
 from jinja2 import Environment, FileSystemLoader
 
-POST_DIRECTORY=os.path.join(CONTENT_DIRECTORY, "posts", NOW.strftime("%Y/%m"))
+POST_DIRECTORY=os.path.join(CONTENT_DIRECTORY, "posts")
+TODAYS_POST_DIRECTORY=os.path.join(POST_DIRECTORY, NOW.strftime("%Y/%m"))
 
 @task
 def new(markup=DEFAULT_MARKUP,**kwargs):
@@ -18,15 +19,15 @@ def new(markup=DEFAULT_MARKUP,**kwargs):
     sys.exit(1)
     
   try:
-    if not os.path.exists(POST_DIRECTORY):
-      os.makedirs(POST_DIRECTORY)
+    if not os.path.exists(TODAYS_POST_DIRECTORY):
+      os.makedirs(TODAYS_POST_DIRECTORY)
   except OSError as exc:
-    sys.stderr.write("Unable to write directory '%s', error: '%s'\n" % (POST_DIRECTORY, str(exc)))
+    sys.stderr.write("Unable to write directory '%s', error: '%s'\n" % (TODAYS_POST_DIRECTORY, str(exc)))
     sys.exit(2)
 
   tdict = dict()
   title=kwargs.get("title", "My Post")
-  (slug, path) = new_slug_and_path_from_title(title, extension, POST_DIRECTORY)
+  (slug, path) = new_slug_and_path_from_title(title, extension, TODAYS_POST_DIRECTORY)
   tdict["title"]=title
   tdict["date"]=NOW.strftime("%Y-%m-%d %H:%M")
   tdict["tags"]=kwargs.get("tags","")
