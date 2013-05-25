@@ -27,8 +27,23 @@ git submodule add git@github.com:dandesousa/pelican-shovel.git shovel
 
 You then have access to all the PS tasks:
 
-### Creation
+### Help
 
+Following the shovel syntax you can get help information by typing:
+
+```
+# Prints short description of each command in PS
+shovel help
+```
+
+Get detailed information about a command by drilling in:
+
+```
+# Prints the help docs for the command
+shovel help post.new
+```
+
+### Creation
 
 ```
 shovel post.new --title "It's a wonderful day in the neighborhood!" 
@@ -60,6 +75,9 @@ You can filter them with the search parameter
 
 ```
 # case insensitive regex search
+shovel post.list 2013
+
+# equivalent search syntax
 shovel post.list --search 2013
 ```
 
@@ -67,10 +85,17 @@ searches for all posts with 2013 in the file path.
 
 ### Edits
 
+Edits work much like lists.
+
+```
+# edits all posts with 'programming' in the path, opens them in your editor
+shovel post.edit programming
+```
+
 As a bonus you can also edit posts this way:
 
 ```
-# finds all posts with "programming" in them, opens them in your editor
+# finds all posts with "programming" in the path, opens them in your editor
 shovel post.list --search programming --edit
 ```
 
