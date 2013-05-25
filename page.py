@@ -8,7 +8,8 @@ PAGE_DIRECTORY=os.path.join(CONTENT_DIRECTORY, "pages")
 @task
 def new(**kwargs):
   """Handles creation of a new page."""
-  file_information = get_file_render_information("page", "markdown")
+  markup = kwargs.get("markup", DEFAULT_MARKUP)
+  file_information = get_file_render_information("page", markup)
   create_new_pelican_file(file_information, PAGE_DIRECTORY, kwargs)
  
 @task

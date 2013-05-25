@@ -45,7 +45,11 @@ DEFAULT_MARKUP="markdown"
 FileInformation=collections.namedtuple("FileInformation", ["template", "extension"])
 
 def get_file_render_information(template_base_str,markup):
-  markup_definition = SUPPORTED_FORMATS.get(markup, DEFAULT_MARKUP)
+  if markup not in SUPPORTED_FORMATS:
+    sys.stderr.write("That markup format is not supported: '%s' (expected one of: '%s')\n" % (markup, tuple(SUPPORTED_FORMATS.keys())) )
+    sys.exit(1)
+
+  markup_definition = SUPPORTED_FORMATS[markup]
   _template_name = "%s-%s.j2" % (template_base_str, markup_definition.name)
   return FileInformation(_template_name, markup_definition.extension)
 
