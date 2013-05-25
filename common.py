@@ -133,7 +133,7 @@ def list_pelican_files(directory, kwargs):
     pattern = kwargs['search']
     files = find_files(directory, lambda x: re.search(pattern, x, re.IGNORECASE))
   else:
-    sys.stderr.write("Received unexpected argument combination, expecting 0 arguments or --search <pattern>\n")
+    sys.stderr.write("Received unexpected argument combination, expecting <pattern> argument or --search <pattern>\n")
     sys.exit(1)
 
   for f in files:
