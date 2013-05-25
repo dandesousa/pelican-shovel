@@ -16,7 +16,7 @@ def new(**kwargs):
     --markup: The markup language to use (default: markdown) 
   """
   markup = kwargs.get("markup", DEFAULT_MARKUP)
-  file_information = get_file_render_information("page", markup)
+  file_information = get_file_render_information("post", markup)
   create_new_pelican_file(file_information, TODAYS_POST_DIRECTORY, kwargs)
 
 @task
