@@ -16,6 +16,12 @@ pip install shovel
 
 It works best if you install the latest from source, though. Clone it and run `setup.py install`.
 
+you should also install jinja2 templates, which is also required for page / post generation.
+
+```
+pip install jinja2
+```
+
 ## Usage
 
 
