@@ -22,10 +22,10 @@ def create(name, **kwargs):
         :param tags: tags to add to the post when created
         :param category: The category or categories to use for the post
     """
-    if name == VALID_POST_NAMES:
+    if name in VALID_POST_NAMES:
         from post import create as create_post
         create_post(**kwargs)
-    elif name == VALID_PAGE_NAMES:
+    elif name in VALID_PAGE_NAMES:
         from page import create as create_page
         create_page(**kwargs)
     else:
@@ -40,10 +40,10 @@ def list(name, pattern=""):
         :param name: the type of entry you'd like to list {'post', 'page'}
         :param pattern: the pattern as a regular expression to search for in the file path.
     """
-    if name == VALID_POST_NAMES:
+    if name in VALID_POST_NAMES:
         from post import list as list_post
         list_post(pattern)
-    elif name == VALID_PAGE_NAMES:
+    elif name in VALID_PAGE_NAMES:
         from page import list as list_page
         list_page(pattern)
     else:
@@ -58,10 +58,10 @@ def edit(name, pattern=""):
         :param name: the type of entry you'd like to edit {'post', 'page'}
         :param pattern: the pattern as a regular expression to search for in the file path.
     """
-    if name == VALID_POST_NAMES:
+    if name in VALID_POST_NAMES:
         from post import edit as edit_post
         edit_post(pattern)
-    elif name == VALID_PAGE_NAMES:
+    elif name in VALID_PAGE_NAMES:
         from page import edit as edit_page
         edit_page(pattern)
     else:
@@ -79,10 +79,10 @@ def remove(name, pattern="", force=False):
     Keyworded Arguments:
         :param force: forces deletion of the file without prompting the user (use with caution).
     """
-    if name == VALID_POST_NAMES:
+    if name in VALID_POST_NAMES:
         from post import remove as remove_post
         remove_post(pattern, force=force)
-    elif name == VALID_PAGE_NAMES:
+    elif name in VALID_PAGE_NAMES:
         from page import remove as remove_page
         remove_page(pattern, force=force)
     else:
