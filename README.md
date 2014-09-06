@@ -52,20 +52,20 @@ shovel help post.new
 ### Creation
 
 ```
-shovel post.new --title "It's a wonderful day in the neighborhood!" 
+shovel create post --title "It's a wonderful day in the neighborhood!" 
 # page created, editor opens
 ```
 
 New posts are written and we even have an option to open your editor (we use your git editor) as you create pages. If you don't want your editor to open by default:
 
 ```
-shovel post.new --title "My Post" --quiet
+shovel create post --title "My Post" --quiet
 ```
 
 You can do the same for pages:
 
 ```
-shovel page.new --title "My Page" --quiet
+shovel create page --title "My Page" --quiet
 ```
 
 ### Listing
@@ -74,17 +74,14 @@ You can also see posts you already created:
 
 ```
 # lists all the posts you made -- maybe not so useful
-shovel post.list 
+shovel list post
 ```
 
 You can filter them with the search parameter
 
 ```
 # case insensitive regex search
-shovel post.list 2013
-
-# equivalent search syntax
-shovel post.list --search 2013
+shovel list post 2013
 ```
 
 searches for all posts with 2013 in the file path.
@@ -95,14 +92,7 @@ Edits work much like lists.
 
 ```
 # edits all posts with 'programming' in the path, opens them in your editor
-shovel post.edit programming
-```
-
-As a bonus you can also edit posts this way:
-
-```
-# finds all posts with "programming" in the path, opens them in your editor
-shovel post.list --search programming --edit
+shovel edit post programming
 ```
 
 ## Future 

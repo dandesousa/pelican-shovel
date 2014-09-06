@@ -7,8 +7,6 @@ import os
 import sys
 import datetime as dt
 
-from shovel import task
-
 sys.path.append(os.getcwd())
 import pelicanconf
 
@@ -63,11 +61,11 @@ def new_slug_and_path_from_title(title, ext, directory, append=0):
   slug = slugified if not append else "%s-%s" % (slugified, append)
   file_name = "%s.%s" % ( slug, ext )
   path = os.path.join(directory, file_name)
-  
+
   if os.path.exists(path):
     return new_slug_and_path_from_title(title, ext, directory, append + 1)
 
-  return (slug, path) 
+  return (slug, path)
 
 def find_files(target_directory, filter_func=None):
   """Returns a list of all files under the given target directory."""
@@ -99,7 +97,7 @@ def create_new_pelican_file(file_info,directory,kwargs):
   tdict = dict()
   title = kwargs.get("title", "My New Entry")
   tdict["title"] = title
-  
+
   (slug, path) = new_slug_and_path_from_title(title, file_info.extension, directory)
   if kwargs.get("hidden", False):
     tdict["status"] = "hidden"
@@ -109,7 +107,7 @@ def create_new_pelican_file(file_info,directory,kwargs):
   # post fields
   tdict["tags"] = kwargs.get("tags", "")
   tdict["category"] = kwargs.get("category", "")
-  tdict["slug"] = slug 
+  tdict["slug"] = slug
   tdict["summary"] = ""
 
   with open(path, "w") as f:
@@ -122,14 +120,14 @@ def create_new_pelican_file(file_info,directory,kwargs):
 
   print "Create file at: %s" % (path)
 
-def list_pelican_files(directory, kwargs):
+def list_pelican_files(directory, **kwargs):
   files = []
   should_edit = 'edit' in kwargs
   if not len(kwargs):
     files = find_files(directory)
   elif 'search' in kwargs:
     # case insensitive search
-    import re 
+    import re
     pattern = kwargs['search']
     files = find_files(directory, lambda x: re.search(pattern, x, re.IGNORECASE))
   else:
@@ -137,10 +135,15 @@ def list_pelican_files(directory, kwargs):
     sys.exit(1)
 
   for f in files:
-    print f
+
+    if should_edit:
+        print "Editting {}".format(f)
+    else:
+        print f
 
     if EDITOR and should_edit:
       subprocess.call([EDITOR, f])
+      print "Done"
     elif should_edit:
       sys.stderr.write("Unable to open editor with command: '%s %s'\n" % ( EDITOR, path ))
       sys.exit(1)
