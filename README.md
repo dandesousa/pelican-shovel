@@ -68,7 +68,7 @@ You can do the same for pages:
 shovel create page --title "My Page" --quiet
 ```
 
-###create
+### Listing
 
 You can also see posts you already created:
 
@@ -86,7 +86,7 @@ shovel list post 2013
 
 searches for all posts with 2013 in the file path.
 
-### Edits
+### Editting
 
 Edits work much like lists.
 
@@ -95,12 +95,23 @@ Edits work much like lists.
 shovel edit post programming
 ```
 
+### Remove
+
+Edits work much like lists.
+
+```
+# removes all posts with 'programming' in the path, prompts before removal.
+shovel remove post programming
+
+# you can also force remove (use extreme caution when dealing with non-checked in files)
+shovel remove post programming --force
+```
+
 ## Future 
 
 More tasks will be coming in the future:
   * Querying metadata for your posts
   * Support for other markups besides markdown
-  * Removing posts, moving posts
   * Changing metadata
   * Better Docs
 

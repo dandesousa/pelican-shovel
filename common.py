@@ -121,29 +121,69 @@ def create_new_pelican_file(file_info,directory,kwargs):
   print "Create file at: %s" % (path)
 
 def list_pelican_files(directory, **kwargs):
-  files = []
-  should_edit = 'edit' in kwargs
-  if not len(kwargs):
-    files = find_files(directory)
-  elif 'search' in kwargs:
-    # case insensitive search
-    import re
-    pattern = kwargs['search']
-    files = find_files(directory, lambda x: re.search(pattern, x, re.IGNORECASE))
-  else:
-    sys.stderr.write("Received unexpected argument combination, expecting <pattern> argument or --search <pattern>\n")
-    sys.exit(1)
-
-  for f in files:
+    files = []
+    should_edit = kwargs.get("edit", False)
+    should_remove = kwargs.get("remove", False)
+    quiet_remove = kwargs.get("force", False)
+    if not len(kwargs):
+        files = find_files(directory)
+    elif 'search' in kwargs:
+        # case insensitive search
+        import re
+        pattern = kwargs['search']
+        files = find_files(directory, lambda x: re.search(pattern, x, re.IGNORECASE))
+    else:
+        sys.stderr.write("Received unexpected argument combination, expecting <pattern> argument or --search <pattern>\n")
+        sys.exit(1)
 
     if should_edit:
-        print "Editting {}".format(f)
+        edit_files(files)
+    elif should_remove:
+        remove_files(files, quiet_remove)
     else:
+        list_files(files)
+
+
+def safe_prompt(message, options):
+    import sys
+
+    while True:
+        try:
+            sys.stdout.write(message)
+            line = sys.stdin.readline()
+        except KeyboardInterrupt:
+            sys.exit(1)
+
+        val = line.strip()
+        if val in options:
+            return val
+
+
+def list_files(files):
+    for f in files:
         print f
 
-    if EDITOR and should_edit:
-      subprocess.call([EDITOR, f])
-      print "Done"
-    elif should_edit:
-      sys.stderr.write("Unable to open editor with command: '%s %s'\n" % ( EDITOR, path ))
-      sys.exit(1)
+
+def remove_files(files, quiet=False):
+    options = ("Y", "n")
+    if not quiet:
+        print "The following file(s) will be removed:"
+        list_files(files)
+        val = safe_prompt("Are you sure ({})? ".format("/".join(options)), options)
+    if quiet or val == options[0]:
+        for f in files:
+            os.remove(f)
+            print "Removed: {}".format(f)
+    else:
+        print "Abandoned attempt to remove files"
+
+
+def edit_files(files):
+    for f in files:
+        if EDITOR:
+            print "Edit: {}".format(f)
+            subprocess.call([EDITOR, f])
+            print "Done"
+        else:
+            sys.stderr.write("Unable to open editor with command: '{} {}'\n".format(EDITOR, f))
+            sys.exit(1)

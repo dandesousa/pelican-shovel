@@ -62,3 +62,24 @@ def edit(name, pattern=""):
         edit_page(pattern)
     else:
         sys.stderr.write("Expected argument 1 to be one of ({}), but got: '{}' instead.\n".format(', '.join(["post", "page"], name)))
+
+
+@task
+def remove(name, pattern="", force=False):
+    """Permanently deletes the post / page you specified.
+
+    Positional Arguments:
+        :param name: the type of entry you'd like to edit {'post', 'page'}
+        :param pattern: the pattern as a regular expression to search for in the file path.
+
+    Keyworded Arguments:
+        :param force: forces deletion of the file without prompting the user (use with caution).
+    """
+    if name == "post":
+        from post import remove as remove_post
+        remove_post(pattern, force=force)
+    elif name == "page":
+        from page import remove as remove_page
+        remove_page(pattern, force=force)
+    else:
+        sys.stderr.write("Expected argument 1 to be one of ({}), but got: '{}' instead.\n".format(', '.join(["post", "page"], name)))

@@ -39,3 +39,9 @@ def edit(pattern, **kwargs):
         <pattern>: required pattern to use when searching for posts to edit
     """
     list_pelican_files(POST_DIRECTORY, edit=True, search=pattern)
+
+
+def remove(pattern, force=False):
+    """Works like list but prompts user to remove the files instead.
+    """
+    list_pelican_files(POST_DIRECTORY, search=pattern, remove=True, force=force)
