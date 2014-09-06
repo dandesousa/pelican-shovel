@@ -46,7 +46,7 @@ Get detailed information about a command by drilling in:
 
 ```
 # Prints the help docs for the command
-shovel help post.new
+shovel help create
 ```
 
 ### Creation
@@ -68,7 +68,7 @@ You can do the same for pages:
 shovel create page --title "My Page" --quiet
 ```
 
-### Listing
+###create
 
 You can also see posts you already created:
 
