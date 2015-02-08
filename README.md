@@ -1,3 +1,5 @@
+**THIS PROJECT IS DEPRECATED AND NO LONGER BEING UPDATED -- MOVED TO [LAPIS](https://github.com/dandesousa/lapis-**
+
 pelican-shovel
 ==============
 
